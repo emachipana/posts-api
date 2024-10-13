@@ -3,7 +3,7 @@ import { JWT_SECRET } from "../config.js";
 import User from "../models/User.js";
 
 export const checkToken = async (req, res, next) => {
-  const token = req.headers.Authorization;
+  const token = req.headers.authorization;
   if(!token) return res.status(401).json({ message: "Debes iniciar sesión primero" });
 
   try {
