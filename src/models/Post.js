@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import User from "./User.js";
 
 const postSchema = new Schema(
   {
@@ -19,7 +18,8 @@ const postSchema = new Schema(
     comments: {
       type: Number,
       default: 0
-    }
+    },
+    user: {}
   },
   {
     timestamps: true,
@@ -27,11 +27,10 @@ const postSchema = new Schema(
   }
 );
 
-postSchema.methods.toJSON = async function() {
+postSchema.methods.toJSON = function() {
   const { _id, ...post } = this.toObject();
-  const user = await User.findById(post.userId);
 
-  return { id: _id, user, ...post };
+  return { id: _id, ...post };
 }
 
 const Post = model("Post", postSchema);
