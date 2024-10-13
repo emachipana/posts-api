@@ -2,7 +2,8 @@ import Post from "../models/Post.js";
 
 export const getAll = async (_req, res) => {
   try {
-    const posts = await Post.find();
+    let posts = await Post.find();
+    posts = posts.sort((a, b) => b.createdAt - a.createdAt);
 
     res.json(posts);
   }catch(error) {
@@ -17,6 +18,7 @@ export const getAllByLoggedUser = async (req, res) => {
   try {
     let posts = await Post.find();
     posts = posts.filter(post => post.userId.equals(user._id));
+    posts = posts.sort((a, b) => b.createdAt - a.createdAt);
 
     res.json(posts);
   }catch(error) {
@@ -30,7 +32,7 @@ export const create = async (req, res) => {
   const { user } = req;
 
   try {
-    const post = new Post({ content, userId: user.id, user: user.toJSON() });
+    const post = new Post({ content, userId: user._id, user: user.toJSON() });
     const savedPost = await post.save();
 
     res.status(201).json(savedPost);
@@ -49,7 +51,7 @@ export const destroy = async (req, res) => {
     if(!post) return res.status(404).json({ message: "La publicación no existe" });
     if(!post.userId.equals(user._id)) return res.status(401).json({ message: "Debes ser el propietario de la publicación" });
 
-    await Post.findByIdAndDelete(id);
+    await post.deleteOne();
 
     return res.status(204).json();
   }catch(error) {
