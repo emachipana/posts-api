@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import postsRoutes from "./routes/posts.routes.js";
+import commentsRoutes from "./routes/comments.routes.js";
 
 const App = express();
 
@@ -14,5 +15,6 @@ App.use(express.urlencoded({ extended: false }));
 // routes
 App.use("/api/v1/auth", authRoutes);
 App.use("/api/v1/posts", postsRoutes);
+App.use("/api/v1/comments", commentsRoutes);
 
 export default App;
