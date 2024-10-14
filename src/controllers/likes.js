@@ -8,7 +8,7 @@ export const isPostLiked = async (req, res) => {
   try {
     const liked = await Like.findOne({ postId, userId: user._id });
 
-    res.json({ isLiked: !!liked });
+    res.json({ isLiked: !!liked, id: liked._id });
   }catch(error) {
     console.error(error);
     res.status(500).json({ message: error.message });
